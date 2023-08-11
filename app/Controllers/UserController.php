@@ -1205,7 +1205,11 @@ class UserController extends BaseController
         $bought = new Bought();
         $bought->userid = $user->id;
         $bought->shopid = $shop->id;
-        $bought->datetime = time();
+        if (strtotime($user->class_expire) > time() && $shop->class == $user->class){
+            $bought->datetime = strtotime($user->class_expire)
+        }else{
+            $bought->datetime = time();
+        }
         if ($autorenew == 0 || $shop->auto_renew == 0) {
             $bought->renew = 0;
         } else {
